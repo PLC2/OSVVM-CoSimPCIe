@@ -55,14 +55,15 @@ library osvvm_cosim ;
 
 entity PcieModel is
 generic (
-  MODEL_ID_NAME     : string  := "" ;    -- Model name
-  NODE_NUM          : integer := 8 ;     -- CoSim node number. Must be unique from all other CoSim elements
-  ENDPOINT          : boolean := false ; -- true to enable endpoint features
-  REQ_ID            : integer := 0 ;     -- Set Requester ID (completer ID when issuing completions)
-  EN_TLP_REQ_DIGEST : boolean := false ; -- true to enable ECRC on TLP requests (completions will add in response to req with ECRC---can be disabled)
-  PIPE              : boolean := false ; -- true if output to be PIPE compatible (no scrambling or 8b10b encoding; lane width is 9 bits instead of 10)
-  ENABLE_INIT_PHY   : boolean := true  ; -- true if PHY layer link training is to be enabled
-  ENABLE_AUTO       : boolean := false   -- true if PCIe automatic features are to be enabled
+  MODEL_ID_NAME      : string  := "" ;    -- Model name
+  NODE_NUM           : integer := 8 ;     -- CoSim node number. Must be unique from all other CoSim elements
+  ENDPOINT           : boolean := false ; -- true to enable endpoint features
+  REQ_ID             : integer := 0 ;     -- Set Requester ID (completer ID when issuing completions)
+  EN_TLP_REQ_DIGEST  : boolean := false ; -- true to enable ECRC on TLP requests (completions will add in response to req with ECRC---can be disabled)
+  PIPE               : boolean := false ; -- true if output to be PIPE compatible (no 8b10b encoding; lane width is 9 bits instead of 10)
+  DISABLE_SCRAMBLING : boolean := false ; -- true if output to have no scrambling
+  ENABLE_INIT_PHY    : boolean := true  ; -- true if PHY layer link training is to be enabled
+  ENABLE_AUTO        : boolean := false   -- true if PCIe automatic features are to be enabled
 ) ;
 port (
   -- Globals
@@ -207,6 +208,7 @@ begin
         when EP_ADDR          => RdData := 64x"00000001" when ENDPOINT else 64x"00000000";
         when REQID_ADDR       => RdData := std_logic_vector(to_unsigned(REQ_ID, RdData'length)) ;
         when PIPE_ADDR        => RdData := 64x"00000001" when PIPE else 64x"00000000";
+        when SCRAMBLE_ADDR    => RdData := 64x"00000001" when DISABLE_SCRAMBLING else 64x"00000000";
         when EN_ECRC_ADDR     => RdData := 64x"00000001" when EN_TLP_REQ_DIGEST else 64x"00000000";
         when INITPHY_ADDR     => RdData := 64x"00000001" when ENABLE_INIT_PHY else 64x"00000000";
         when ENABLE_AUTO_ADDR => RdData := 64x"00000001" when ENABLE_AUTO     else 64x"00000000";

@@ -93,6 +93,7 @@ package PcieInterfacePkg is
   constant EN_ECRC_ADDR                      : integer := 302 ;
   constant INITPHY_ADDR                      : integer := 303 ;
   constant ENABLE_AUTO_ADDR                  : integer := 304 ;
+  constant SCRAMBLE_ADDR                     : integer := 305 ;
 
   constant GETNEXTTRANS                      : integer := 400 ;
   constant GETINTTOMODEL                     : integer := 401 ;
