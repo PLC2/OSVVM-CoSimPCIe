@@ -1,3 +1,4 @@
+TestSuite CoSim_Pcie
 library    osvvm_TbPcie
 
 ChangeWorkingDirectory ../tests
